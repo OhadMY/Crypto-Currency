@@ -23,7 +23,7 @@ $(window).on("load", () => {
     $(".botcontainer").empty("#spinner");
     //   Creating the coins
     $(".botcontainer").append(
-      `<div id="coins" class="row col-lg-10 col-xxl-12 gap-2 my-2 mx-auto"></div>`
+      `<div id="coins" class="row col-lg-10 col-xxl-12 gap-2 my-2 mx-auto justify-content-center"></div>`
     );
     const offset = 3700;
     for (let i = offset; i < offset + 20; i++) {
@@ -40,7 +40,7 @@ $(window).on("load", () => {
 
   // Creating coins div
   function coinDiv(coinData) {
-    return `<div class="coin card card-body" id="${coinData.id.toLowerCase()}" style="width: 15rem">
+    return `<div class="coin card card-body" id="${coinData.id.toLowerCase()}">
     <div class="form-check form-switch">
     <input class="form-check-input myCheckBox" type="checkbox" id="${coinData.id.toLowerCase()}CheckBox">
     </div>
@@ -204,12 +204,12 @@ $(window).on("load", () => {
     >
       <div id="picture"></div>
       <div id="info">
-        <h1>Hello</h1>
-        <h3>My name is Ohad and I'm 27 years old and I'm from Nahariya.</h3>
-        <h4>
+        <h3>Hello</h3>
+        <h4>My name is Ohad and I'm 27 years old and I'm from Nahariya.</h4>
+        <h5>
           My webstie lets the user check out the value of Cryptocurrency in USD,
           ILS or EUR.
-        </h4>
+        </h5>
       </div>
     </div>`);
       aboutPage = $(".botcontainer").html();
@@ -239,7 +239,11 @@ $(window).on("load", () => {
       $(".botcontainer").append(homePage);
     }
   });
-  // ===========SPA=================
+
+  // Alerts that the page isnt ready
+  $("#livePage").on("click", function (e) {
+    alert("Under Maintenance");
+  });
 
   // Fill here
   // function load() {
