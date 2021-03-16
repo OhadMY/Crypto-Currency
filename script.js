@@ -194,6 +194,14 @@ $(window).on("load", () => {
   $("#aboutPage").on("click", function (e) {
     // Clears checkedCoinsArray
     checkedCoinsArray.splice(0, checkedCoinsArray.length);
+    // Check if homePage need to update the info inside it
+    if (
+      homePage != $(".botcontainer").html() &&
+      aboutPage != $(".botcontainer").html()
+    ) {
+      console.log("works");
+      homePage = $(".botcontainer").html();
+    }
     // Checks if homePage and aboutPage variable are empty
     if (homePage == null || aboutPage == null) {
       homePage = $(".botcontainer").html();
