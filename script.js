@@ -190,11 +190,12 @@ $(window).on("load", () => {
     });
     if (e.target.checked == true) {
       if (checkedCount < 5) {
+        let coinSymbol = coins[coinIndex].symbol.toUpperCase();
         coins[coinIndex].checked = true;
         // Adding the checkbox to the choosencoins div
         $(".choosencoins").append(`
         <div class="selectedcoins" id="${tempCoinID}">
-        <h5>${tempCoinID}</h5>
+        <h5>${coinSymbol}</h5>
         </div>`);
         $(`.choosencoins #${tempCoinID}`).append($(this).parent().clone());
       } else {
