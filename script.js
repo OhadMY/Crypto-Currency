@@ -5,7 +5,6 @@ const MORE_INFO_COINS = "moreInfoCoins";
 const REFETCH_TIME = 5;
 // const REFETCH_TIME = 60 * 2;
 const coins = [];
-const checkedCoinsArray = [];
 let currentPageIndex = -1; // 0 = coins page, 2 = about
 
 $(window).on("load", () => {
@@ -23,8 +22,6 @@ $(window).on("load", () => {
   $.get("https://api.coingecko.com/api/v3/coins/list", (data) => {
     // Remove spinner after finishing
     $(".botcontainer").empty("#spinner");
-    //   Creating the coins
-    // $(".botcontainer").
     const offset = 3400;
     for (let i = offset; i < offset + 20; i++) {
       coins.push({ ...data[i], checked: false });
@@ -108,25 +105,22 @@ $(window).on("load", () => {
     createMoreInfoDiv(e);
   });
 
-  // Search Function - need to change
+  // Search function
   function search() {
     $(`#formInput`).on("submit", function (e) {
       e.preventDefault();
+      let value = $("#inputForm").val().toLowerCase();
+      $("#coins>div").filter(function () {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+      });
     });
 
-    // FIX SEARCH HERE
     $("#inputForm").on("keyup", function (e) {
       e.preventDefault();
-      let value = $(this).val().toLowerCase();
-      if (fileredCoinId.includes(value)) {
-        $("#coins>div").filter(function () {
-          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-        });
-      } else {
-        $("#coins>div").filter(function () {
-          $(this).toggle($(this).text().toLowerCase().indexOf("") > -1);
-        });
-      }
+      let value = $("#inputForm").val().toLowerCase();
+      $("#coins>div").filter(function () {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+      });
     });
   }
 
@@ -158,7 +152,7 @@ $(window).on("load", () => {
         1000 * REFETCH_TIME
     ) {
       moreInfoCoins[foundCoinIndex].time = new Date().getTime();
-      // added updated prices
+      // Added updated prices
       moreInfoCoins[foundCoinIndex].prices = {
         ils: coin.market_data.current_price.ils,
         usd: coin.market_data.current_price.usd,
@@ -186,6 +180,7 @@ $(window).on("load", () => {
           My webstie lets the user check out the value of Cryptocurrency in USD,
           ILS or EUR.
         </h5>
+        <h6>The project contains the usage of HTML, CSS, JavaScript, jQuery, Ajax, Rest API & Bootstrap.</h6>
       </div>
     </div>`;
   }
@@ -195,7 +190,6 @@ $(window).on("load", () => {
     let tempCoinID = e.target.parentElement.parentElement.id;
     let checkedCount = 0;
     const coinIndex = coins.findIndex((coin) => coin.id === tempCoinID);
-    console.log(tempCoinID);
     coins.forEach((coin) => {
       if (coin.checked) checkedCount++;
     });
@@ -220,8 +214,6 @@ $(window).on("load", () => {
 
   // Switch to about
   $("#aboutPage").on("click", function (e) {
-    // Clears checkedCoinsArray
-    checkedCoinsArray.splice(0, checkedCoinsArray.length);
     if (currentPageIndex !== 2) {
       clearSinglePage();
       $(".botcontainer").append(createAboutPage());
@@ -231,6 +223,7 @@ $(window).on("load", () => {
 
   // Switch to home
   $("#home").on("click", function (e) {
+    // Draws all coins again
     coinList(coins);
   });
 
