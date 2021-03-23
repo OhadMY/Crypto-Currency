@@ -2,27 +2,26 @@
 const MORE_INFO_COINS = "moreInfoCoins";
 
 // Change duration before fetching data from api in second
-const REFETCH_TIME = 5;
-// const REFETCH_TIME = 60 * 2;
+const REFETCH_TIME = 60 * 2;
+
+// Creates coins array
 const coins = [];
-let currentPageIndex = -1; // 0 = coins page, 2 = about
+
+// 0 = coins page, 2 = about
+let currentPageIndex = -1;
+
+// Set the offest of starting points for API data
+const offset = 3400;
 
 $(window).on("load", () => {
-  // On load actions
+  // On load action
   localStorage.setItem(MORE_INFO_COINS, JSON.stringify([]));
 
   // On load function
   search();
 
-  // Show spinner when loading data
-  $(".botcontainer").append(
-    `<div class="lds-dual-ring overlay" id="spinner"></div>`
-  );
   //   Get coins
   $.get("https://api.coingecko.com/api/v3/coins/list", (data) => {
-    // Remove spinner after finishing
-    $(".botcontainer").empty("#spinner");
-    const offset = 3400;
     for (let i = offset; i < offset + 20; i++) {
       coins.push({ ...data[i], checked: false });
     }
@@ -46,7 +45,8 @@ $(window).on("load", () => {
       coins.forEach((coin) => {
         list.append(coinDiv(coin));
       });
-      currentPageIndex = 0; // 0 for coins page
+      // 0 for coins page
+      currentPageIndex = 0;
     }
   }
 
@@ -77,14 +77,9 @@ $(window).on("load", () => {
           1000 * REFETCH_TIME) ||
       !foundCoinInfo
     ) {
-      // Show spinner when loading data
-      $(".botcontainer").append(
-        `<div class="lds-dual-ring overlay" id="spinner"></div>`
-      );
+      // Calls to API for the specific coin info
       $.get(`https://api.coingecko.com/api/v3/coins/${id}`, (coin) => {
-        // Remove spinner after finishing
-        $("#spinner").remove();
-        // Cleans the div for new data to arrive
+        // Cleans the div for new data to arrive and then appends new data
         coinInfo.html("");
         $(coinInfo).append(`
           <img src="${coin.image.large}" class="symbol">
@@ -242,3 +237,14 @@ $(window).on("load", () => {
     e.stopPropagation();
   });
 });
+
+// Spinner loading animation
+$(document)
+  .ajaxStart(function () {
+    $(".botcontainer").append(
+      `<div class="lds-dual-ring overlay" id="spinner"></div>`
+    );
+  })
+  .ajaxStop(function () {
+    $("#spinner").remove();
+  });
