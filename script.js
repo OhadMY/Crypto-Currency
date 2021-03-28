@@ -71,6 +71,8 @@ $(window).on("load", () => {
     const coinInfo = $(`#coinInfo-${id}`);
     const moreInfoCoins = parsedLocalStorageCoinInfo();
     const foundCoinInfo = moreInfoCoins.find((coin) => coin.id === id);
+
+    // const coinIndex =
     if (
       (foundCoinInfo &&
         new Date().getTime() - new Date(foundCoinInfo.time).getTime() >=
@@ -91,6 +93,17 @@ $(window).on("load", () => {
         `);
         writeToLocalStorage(coin);
       });
+    } else if (!$(coinInfo).is(":visible")) {
+      const coinIndex = moreInfoCoins.findIndex((findId) => id === findId.id);
+      coinInfo.html("");
+      $(coinInfo).append(`
+          <img src="${moreInfoCoins[coinIndex].symbol}" class="symbol">
+          <div>
+          <h6>ILS - ${moreInfoCoins[coinIndex].prices.ils}₪</h6>
+          <h6>USD - ${moreInfoCoins[coinIndex].prices.usd}$</h6>
+          <h6>EUR - ${moreInfoCoins[coinIndex].prices.eur}€</h6>
+          </div>
+        `);
     }
     $(coinInfo).slideToggle("normal");
   };
@@ -218,7 +231,7 @@ $(window).on("load", () => {
   });
 
   // Switch to home
-  $("#home").on("click", function (e) {
+  $("#homePage").on("click", function (e) {
     // Draws all coins again
     coinList(coins);
   });

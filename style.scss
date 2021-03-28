@@ -6,6 +6,12 @@
 body {
   background-color: rgb(41, 41, 41);
 }
+.myCheckBox,
+#homePage,
+#aboutPage,
+#livePage {
+  cursor: pointer;
+}
 .topcontainer {
   position: fixed;
   left: 0;
