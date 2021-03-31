@@ -204,20 +204,17 @@ $(window).on("load", () => {
     });
     let coinSymbol = coins[coinIndex].symbol.toUpperCase();
     if (e.target.checked == true) {
-      console.log("has entered");
+      // If choosencoins div is hidden and less than 5 coins selected add new coin to choosencoins div
       if (checkedCount < 5 && $(`.choosencoins`).is(":hidden")) {
-        console.log("work 208");
-        console.log(checkedCount);
         coins[coinIndex].checked = true;
         $(".choosencoins .message").after(`
         <div class="selectedcoins" id="${tempCoinID}">
         <h5>${coinSymbol}</h5>
         </div>`);
         $(`.choosencoins #${tempCoinID}`).append($(this).parent().clone());
-      } else if (countDivs < 6 && $(`.choosencoins`).is(":hidden")) {
-        console.log("work 218");
-        console.log(checkedCount);
-        console.log(countDivs);
+      }
+      // If choosencoins div is hidden and only 5 coins selected add a sixth coin and show choosencoins div
+      else if (countDivs < 6 && $(`.choosencoins`).is(":hidden")) {
         $(`#${tempCoinID}CheckBox`).prop("checked", false);
         $(".choosencoins #exit").before(`
         <div class="selectedcoins sixthcoin" id="${tempCoinID}">
@@ -226,40 +223,37 @@ $(window).on("load", () => {
         $(`.choosencoins #${tempCoinID}`).append($(this).parent().clone());
         $(".darken").css("display", "block");
         $(".choosencoins").css("display", "block");
-      } else if ($(`.choosencoins`).is(":visible")) {
+      }
+      //  If choosencoins div is shown on screen and the 6th coins is changing to true,
+      //  removes his sixthcoin class and then activates the exit
+      else if ($(`.choosencoins`).is(":visible")) {
         if (e.target.checked == true && countDivs <= 6) {
           $(`#exit`).attr("disabled", true);
-          console.log("is ture");
+
           coins[coinIndex].checked = true;
           $(`#${tempCoinID}CheckBox`).prop("checked", true);
           $(`.choosencoins #${tempCoinID}`).removeClass("sixthcoin");
           if (countDivs < 6) $(`#exit`).attr("disabled", false);
         }
-      } else if (countDivs >= 6) {
-        console.log("im here");
+      }
+      // If the user picked a 6th coin before and replace it with new pick
+      else if (countDivs === 6) {
         $(`#${tempCoinID}CheckBox`).prop("checked", false);
-        if ($(".sixthcoin myCheckBox").prop("checked")) {
-          $(".darken").css("display", "block");
-          $(".choosencoins").css("display", "block");
-          $(`#${tempCoinID}CheckBox`).prop("checked", false);
-        } else {
-          console.log("iz here");
-          $(".sixthcoin").remove();
-          $(".choosencoins #exit").before(`
+
+        $(".sixthcoin").remove();
+        $(".choosencoins #exit").before(`
         <div class="selectedcoins sixthcoin" id="${tempCoinID}">
         <h5>${coinSymbol}</h5>
         </div>`);
-          $(`.choosencoins #${tempCoinID}`).append($(this).parent().clone());
-          $(".darken").css("display", "block");
-          $(".choosencoins").css("display", "block");
-          $(`#${tempCoinID}CheckBox`).prop("checked", false);
-        }
+        $(`.choosencoins #${tempCoinID}`).append($(this).parent().clone());
+        $(".darken").css("display", "block");
+        $(".choosencoins").css("display", "block");
+        $(`#${tempCoinID}CheckBox`).prop("checked", false);
       }
-    } else {
-      console.log("work 230");
-      console.log(checkedCount);
+    }
+    // Removes the selected coin from the choosencoins div when changed to false
+    else {
       coins[coinIndex].checked = false;
-      console.log(coins[coinIndex].symbol);
       $(`#${tempCoinID}CheckBox`).prop("checked", false);
       $(`.choosencoins #${tempCoinID}`).remove();
       $(`#exit`).attr("disabled", false);
@@ -286,7 +280,7 @@ $(window).on("load", () => {
     alert("Under Maintenance");
   });
 
-  // Removes selection div when clicking on exit
+  // Hides selection div when clicking on exit
   $(`#exit`).on("click", function (e) {
     if (currentPageIndex === 0) {
       $(".darken").css("display", "none");
