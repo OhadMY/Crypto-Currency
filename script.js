@@ -195,29 +195,74 @@ $(window).on("load", () => {
 
   // Checks if checkbox is checked or not
   $(document).on("click", ".myCheckBox", function (e) {
+    let countDivs = $(`.selectedcoins`).length;
     let tempCoinID = e.target.parentElement.parentElement.id;
     let checkedCount = 0;
     const coinIndex = coins.findIndex((coin) => coin.id === tempCoinID);
     coins.forEach((coin) => {
       if (coin.checked) checkedCount++;
     });
+    let coinSymbol = coins[coinIndex].symbol.toUpperCase();
     if (e.target.checked == true) {
-      if (checkedCount < 5) {
-        let coinSymbol = coins[coinIndex].symbol.toUpperCase();
+      console.log("has entered");
+      if (checkedCount < 5 && $(`.choosencoins`).is(":hidden")) {
+        console.log("work 208");
+        console.log(checkedCount);
         coins[coinIndex].checked = true;
-        // Adding the checkbox to the choosencoins div
-        $(".choosencoins").append(`
+        $(".choosencoins .message").after(`
         <div class="selectedcoins" id="${tempCoinID}">
         <h5>${coinSymbol}</h5>
         </div>`);
         $(`.choosencoins #${tempCoinID}`).append($(this).parent().clone());
-      } else {
+      } else if (countDivs < 6 && $(`.choosencoins`).is(":hidden")) {
+        console.log("work 218");
+        console.log(checkedCount);
+        console.log(countDivs);
+        $(`#${tempCoinID}CheckBox`).prop("checked", false);
+        $(".choosencoins #exit").before(`
+        <div class="selectedcoins sixthcoin" id="${tempCoinID}">
+        <h5>${coinSymbol}</h5>
+        </div>`);
+        $(`.choosencoins #${tempCoinID}`).append($(this).parent().clone());
         $(".darken").css("display", "block");
-        e.target.checked = false;
+        $(".choosencoins").css("display", "block");
+      } else if ($(`.choosencoins`).is(":visible")) {
+        if (e.target.checked == true && countDivs <= 6) {
+          $(`#exit`).attr("disabled", true);
+          console.log("is ture");
+          coins[coinIndex].checked = true;
+          $(`#${tempCoinID}CheckBox`).prop("checked", true);
+          $(`.choosencoins #${tempCoinID}`).removeClass("sixthcoin");
+          if (countDivs < 6) $(`#exit`).attr("disabled", false);
+        }
+      } else if (countDivs >= 6) {
+        console.log("im here");
+        $(`#${tempCoinID}CheckBox`).prop("checked", false);
+        if ($(".sixthcoin myCheckBox").prop("checked")) {
+          $(".darken").css("display", "block");
+          $(".choosencoins").css("display", "block");
+          $(`#${tempCoinID}CheckBox`).prop("checked", false);
+        } else {
+          console.log("iz here");
+          $(".sixthcoin").remove();
+          $(".choosencoins #exit").before(`
+        <div class="selectedcoins sixthcoin" id="${tempCoinID}">
+        <h5>${coinSymbol}</h5>
+        </div>`);
+          $(`.choosencoins #${tempCoinID}`).append($(this).parent().clone());
+          $(".darken").css("display", "block");
+          $(".choosencoins").css("display", "block");
+          $(`#${tempCoinID}CheckBox`).prop("checked", false);
+        }
       }
     } else {
+      console.log("work 230");
+      console.log(checkedCount);
       coins[coinIndex].checked = false;
+      console.log(coins[coinIndex].symbol);
+      $(`#${tempCoinID}CheckBox`).prop("checked", false);
       $(`.choosencoins #${tempCoinID}`).remove();
+      $(`#exit`).attr("disabled", false);
     }
   });
 
@@ -241,14 +286,12 @@ $(window).on("load", () => {
     alert("Under Maintenance");
   });
 
-  // Removes selection div when clicking on darken area
-  $(`.darken`).on("click", function (e) {
-    if (currentPageIndex === 0) $(".darken").css("display", "none");
-  });
-
-  // Lets you click on the inner div without exsiting it
-  $(`.choosencoins`).on("click", function (e) {
-    e.stopPropagation();
+  // Removes selection div when clicking on exit
+  $(`#exit`).on("click", function (e) {
+    if (currentPageIndex === 0) {
+      $(".darken").css("display", "none");
+      $(".choosencoins").css("display", "none");
+    }
   });
 });
 

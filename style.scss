@@ -67,6 +67,7 @@ body {
   text-shadow: 0 0 10px #0d6efd;
 }
 .choosencoins {
+  display: none;
   text-align: center;
   padding: 20px;
   border: 5px solid #0d6efd;
@@ -98,6 +99,9 @@ body {
   z-index: 998;
   opacity: 1;
   transition: all 0.5s;
+}
+.sixthcoin {
+  margin-top: 25px;
 }
 // ======= spinner =========
 .lds-dual-ring {
