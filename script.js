@@ -13,6 +13,9 @@ let currentPageIndex = -1;
 // Set the offest of starting points for API data
 const offset = 3400;
 
+// Sets the amount on coin selected from the retrieved coins data
+const coinsLength = 20;
+
 $(window).on("load", () => {
   // On load action
   localStorage.setItem(MORE_INFO_COINS, JSON.stringify([]));
@@ -22,7 +25,7 @@ $(window).on("load", () => {
 
   //   Get coins
   $.get("https://api.coingecko.com/api/v3/coins/list", (data) => {
-    for (let i = offset; i < offset + 20; i++) {
+    for (let i = offset; i < offset + coinsLength; i++) {
       coins.push({ ...data[i], checked: false });
     }
     coinList(coins);
